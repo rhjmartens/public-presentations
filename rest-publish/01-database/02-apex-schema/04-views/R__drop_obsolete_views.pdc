@@ -1,0 +1,25 @@
+declare
+  l_viewnames wwv_flow_t_varchar2 := wwv_flow_t_varchar2('mcr_late_asn_vw'
+                                                        ,'MCR_MONTH_CI_VW'
+                                                        ,'mycal_r_tracktrace_vw'
+                                                        ,'mycal_c_scan_log_vw'
+                                                        ,'mycal_scans_incomplete_vw'
+                                                        ,'mycal_scans_missing_vw'
+                                                        ,'mycal_shipment_lines_vw'
+                                                        ,'mycal_pending_shipment_creations_vw'
+                                                        ,'mycal_scans_missing_vw'
+                                                        ,'xxyss_status');
+begin
+
+  <<user_views>>
+  for usvw in (select 'drop view ' || uv.view_name as dropcmd
+               from   user_views uv
+               where  upper(uv.view_name) in
+                      (select upper(column_value)
+                       from   table(l_viewnames)))
+  loop
+    execute immediate usvw.dropcmd;
+  end loop user_views;
+
+end;
+/

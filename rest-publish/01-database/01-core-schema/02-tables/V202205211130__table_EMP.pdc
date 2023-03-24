@@ -1,0 +1,25 @@
+-- Create table
+create table EMP
+(
+  empno    NUMBER(4) not null,
+  ename    VARCHAR2(50),
+  job      VARCHAR2(50),
+  mgr      NUMBER(4),
+  hiredate DATE,
+  sal      NUMBER(7,2),
+  comm     NUMBER(7,2),
+  deptno   NUMBER(2)
+);
+-- Create/Recreate indexes 
+create index EMP_1 on EMP (MGR);
+create index EMP_2 on EMP (DEPTNO);
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table EMP
+  add constraint EMP_PK primary key (EMPNO)
+  using index ;
+alter table EMP
+  add constraint EMP_DEPT_FK foreign key (DEPTNO)
+  references DEPT (DEPTNO);
+alter table EMP
+  add constraint EMP_MGR_FK foreign key (MGR)
+  references EMP (EMPNO);

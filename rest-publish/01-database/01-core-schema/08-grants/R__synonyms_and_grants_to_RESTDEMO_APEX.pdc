@@ -1,0 +1,8 @@
+--===== Tables
+grant select on emp           to presrest_apex_dev;
+grant select on dept          to presrest_apex_dev;
+--===== Views
+grant select on emp_dept_v    to presrest_apex_dev;
+--===== Sequences
+grant select on dept_seq      to presrest_apex_dev;
+grant select on emp_seq       to presrest_apex_dev;

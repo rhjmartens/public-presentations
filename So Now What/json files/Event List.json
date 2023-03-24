@@ -1,0 +1,94 @@
+{
+    "kind": "calendar#events",
+    "etag": "\"p33k818ldjesu20g\"",
+    "summary": "Richard",
+    "updated": "2019-04-05T14:57:46.193Z",
+    "timeZone": "Europe/Amsterdam",
+    "accessRole": "owner",
+    "defaultReminders": [{
+        "method": "popup",
+        "minutes": 10
+    }],
+    "nextPageToken": "CigKGmF1NmloYzZyNTRsMXJ1YjRmcDI4ZTBGdrGAEggICAq7eby6wVGg0IABIAGOiAoq2bueEC",
+    "items": [{
+        "kind": "calendar#event",
+        "etag": "\"28482812184000\"",
+        "id": "_clr6arjkbsp32e9p6crj4dp1mmapbkelo2sorfdk",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=X2NscjZhcmprYnNwJlOXA2Y3JqNGRwaTgxbW1hcGJrZWxvMnNvcmZkayByLm1hcnRlbnNAc21hcnQ0c29sdXRpb25zLm5s",
+        "created": "2015-02-17T10:44:40.000Z",
+        "updated": "2015-02-18T16:20:06.092Z",
+        "summary": "2nd APEX-NL Meetup",
+        "description": "ORCLAPEX-NL\nWednesday, February 18 at 5:30 PM\n\nDeze keer is Ordina gastheer. Op een zeer centrale lokatie - in Utrecht langs de A12 - en op de juiste hoogte voor een fraai uitzicht (de 11e verdiepi...\n\nDetails: http://www.meetup.com/ORCLAPEX-NL/events/219937272/",
+        "location": "Ordina (Ringwade 1, Nieuwegein, Netherlands)",
+        "creator": {
+            "email": "r.martens@smart4solutions.nl",
+            "displayName": "Richard Martens",
+            "self": true
+        },
+        "organizer": {
+            "email": "info@meetup.com",
+            "displayName": "Meetup Reminder"
+        },
+        "start": {
+            "dateTime": "2015-02-18T17:30:00+01:00",
+            "timeZone": "Europe/Amsterdam"
+        },
+        "end": {
+            "dateTime": "2015-02-18T20:30:00+01:00",
+            "timeZone": "Europe/Amsterdam"
+        },
+        "iCalUID": "event_219937272@meetup.com",
+        "sequence": 1,
+        "attendees": [{
+            "email": "r.martens@smart4solutions.nl",
+            "displayName": "Richard Martens",
+            "self": true,
+            "responseStatus": "accepted"
+        }],
+        "guestsCanInviteOthers": false,
+        "privateCopy": true,
+        "reminders": {
+            "useDefault": true
+        }
+    }, {
+        "kind": "calendar#event",
+        "etag": "\"28495450266000\"",
+        "id": "_60q30c1g60o30e1i60o4ac1rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g8go38c1o84sjad9j6h348c1g64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g6kqk6e1g6d244h9i8914ad1k890jahhn64rk2ea56sq42d216sq0",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc4Z28zOGMxbzg0c2phZDlqNmgzNDhjMWc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnNmtxazZlMWc2ZDI0NGg5aTg5MTRhZDFrODkwamFoaG42NHJrMmVhNTZzcTQyZDIxNnNxMCByLm1hcnRlbnNAc21hcnQ0c29sdXRpb25zLm5s",
+        "created": "2015-02-24T09:48:21.000Z",
+        "updated": "2015-02-24T10:14:15.133Z",
+        "summary": "Job Interview",
+        "description": "Sample Description",
+        "location": "Doesburg ",
+        "creator": {
+            "email": "r.martens@smart4solutions.nl",
+            "displayName": "Richard Martens",
+            "self": true
+        },
+        "organizer": {
+            "email": "someone.somewhere@acompany.com",
+            "displayName": "Someone Somewhere"
+        },
+        "start": {
+            "dateTime": "2015-02-27T11:00:00+01:00"
+        },
+        "end": {
+            "dateTime": "2015-02-27T12:00:00+01:00"
+        },
+        "iCalUID": "040000008200E00074C5B7101A82E00800000000D0408A95534FD00100000000000000001000000055C803DBE2BBE44BA5F717A9E74A4A74",
+        "sequence": 1,
+        "attendees": [{
+            "email": "r.martens@smart4solutions.nl",
+            "displayName": "Richard Martens",
+            "self": true,
+            "responseStatus": "accepted"
+        }],
+        "guestsCanInviteOthers": false,
+        "privateCopy": true,
+        "reminders": {
+            "useDefault": true
+        }
+    }]
+}

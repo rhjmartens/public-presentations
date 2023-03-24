@@ -1,0 +1,11 @@
+-- Create table
+create table DEPT
+(
+  deptno NUMBER(2) not null,
+  dname  VARCHAR2(50),
+  loc    VARCHAR2(50)
+);
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DEPT
+  add constraint DEPT_PK primary key (DEPTNO)
+  using index ;

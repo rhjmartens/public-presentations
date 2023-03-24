@@ -1,0 +1,18 @@
+clear;
+
+set serveroutput on;
+begin
+  dbms_output.put_line(wwv_flow.cr || 'Cleaning stuff ');
+  for t in (select 'drop table ' || tbl.table_name || ' force' as stmt
+            from   user_tables tbl
+            where  tbl.table_name = 'EMPLOYEES'
+            union all
+            select 'drop type ' || tpe.type_name || ' force'
+            from   user_types tpe
+            where  tpe.type_name = 'O_EMP')
+  loop
+    dbms_output.put_line(t.stmt);
+    begin execute immediate t.stmt; dbms_output.put_line('dropped'); exception when others then dbms_output.put_line(substr(sqlerrm, 1, 255)); end;
+  end loop;
+end;
+/

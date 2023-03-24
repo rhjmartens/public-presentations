@@ -1,0 +1,84 @@
+declare
+  -- DO NOT EXECUTE MANUALLY, script is meant to be executed by flyway!!
+  l_env constant varchar2(20) := '${FLYWAYTARGETENV}';
+begin
+  -- This script will correct APP_IDs and give access rights to Developers on Docker.
+
+  if l_env = 'DCK'
+  then
+    ---- Correct APP_ID in mycal_application_group_pages for Docker.
+    ---- Because docker uses different APP_ID than the other environments.
+    execute immediate q'[update mycal_application_group_pages t
+                        set    t.app_id = t.app_id + 100]';
+
+    ---- Set AllData property for user on Docker
+    execute immediate q'[update xxyss_dataauthentication.userdatasetting@xxyss t
+                         set    t.alldata = 'Y'
+                         where  t.username in ('KARISHMA.PAWAR@CALIBER.GLOBAL'
+                                              ,'TSTRUIK@SMART4SOLUTIONS.NL'
+                                              ,'RVLEENDERS@SMART4SOLUTIONS.NL'
+                                              ,'RVDWEIDEN@SMART4SOLUTIONS.NL'
+                                              ,'R.MARTENS@SMART4SOLUTIONS.NL'
+                                              ,'SHWETALI')]';
+
+    ---- Insert Groups for user on Docker
+    execute immediate q'[merge into mycal_application_group_users trg
+                         using (
+                           with iv_users as
+                            (select column_value as user_name
+                             from   table(apex_string.split(p_str => 'KARISHMA.PAWAR@CALIBER.GLOBAL:TSTRUIK@SMART4SOLUTIONS.NL:RVLEENDERS@SMART4SOLUTIONS.NL:RVDWEIDEN@SMART4SOLUTIONS.NL:R.MARTENS@SMART4SOLUTIONS.NL:SHWETALI'
+                                                           ,p_sep => ':')))
+                           select iv_users.user_name
+                                 ,apgp.id
+                           from   table(apex_string.split(p_str => 'WSCUSTOMER:ADMIN:CUSTOMER:SUPPLIER:WAREHOUSE:CARRIER:GENERALCONTRACTOR'
+                                                         ,p_sep => ':')) b
+                           join   mycal_application_groups apgp on apgp.code = b.column_value
+                           cross  join iv_users
+                           order  by 1
+                                    ,2) src on (trg.username = src.user_name and trg.apgp_id = src.id) when
+                            not matched then
+                             insert
+                               (apgp_id
+                               ,username)
+                             values
+                               (src.id
+                               ,src.user_name)]';
+                               
+  elsif l_env = 'INT'
+  then
+    ---- Set AllData property for user on INT (Integration)
+    execute immediate q'[update xxyss_dataauthentication.userdatasetting@xxyss t
+                         set    t.alldata = 'Y'
+                         where  t.username in ('KARISHMA.PAWAR@CALIBER.GLOBAL'
+                                              ,'TSTRUIK@SMART4SOLUTIONS.NL'
+                                              ,'RVLEENDERS@SMART4SOLUTIONS.NL'
+                                              ,'RVDWEIDEN@SMART4SOLUTIONS.NL'
+                                              ,'R.MARTENS@SMART4SOLUTIONS.NL'
+                                              ,'SHWETALI')]';
+
+    ---- Insert Groups for user on Docker
+    execute immediate q'[merge into mycal_application_group_users trg
+                         using (
+                           with iv_users as
+                            (select column_value as user_name
+                             from   table(apex_string.split(p_str => 'KARISHMA.PAWAR@CALIBER.GLOBAL:TSTRUIK@SMART4SOLUTIONS.NL:RVLEENDERS@SMART4SOLUTIONS.NL:RVDWEIDEN@SMART4SOLUTIONS.NL:R.MARTENS@SMART4SOLUTIONS.NL:SHWETALI'
+                                                           ,p_sep => ':')))
+                           select iv_users.user_name
+                                 ,apgp.id
+                           from   table(apex_string.split(p_str => 'WSCUSTOMER:ADMIN:CUSTOMER:SUPPLIER:WAREHOUSE:CARRIER:GENERALCONTRACTOR'
+                                                         ,p_sep => ':')) b
+                           join   mycal_application_groups apgp on apgp.code = b.column_value
+                           cross  join iv_users
+                           order  by 1
+                                    ,2) src on (trg.username = src.user_name and trg.apgp_id = src.id) when
+                            not matched then
+                             insert
+                               (apgp_id
+                               ,username)
+                             values
+                               (src.id
+                               ,src.user_name)]';
+  end if;
+
+end;
+/

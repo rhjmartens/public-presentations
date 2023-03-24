@@ -1,0 +1,165 @@
+create or replace type o_emp_api force as object
+  /*                           __           
+                           _.-~  )        ███████╗███╗   ███╗ █████╗ ██████╗ ████████╗██╗  ██╗
+                _..--~~~~,'   ,-/     _   ██╔════╝████╗ ████║██╔══██╗██╔══██╗╚══██╔══╝██║  ██║
+             .-'. . . .'   ,-','    ,' )  ███████╗██╔████╔██║███████║██████╔╝   ██║   ███████║
+           ,'. . . _   ,--~,-'__..-'  ,'  ╚════██║██║╚██╔╝██║██╔══██║██╔══██╗   ██║   ╚════██║
+         ,'. . .  (@)' ---~~~~      ,'    ███████║██║ ╚═╝ ██║██║  ██║██║  ██║   ██║        ██║
+        /. . . . '~~             ,-'      ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝
+       /. . . . .             ,-'         ███████╗ ██████╗ ██╗     ██╗   ██╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+      ; . . . .  - .        ,'            ██╔════╝██╔═══██╗██║     ██║   ██║╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+     : . . . .       _     /              ███████╗██║   ██║██║     ██║   ██║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+    . . . . .          `-.:               ╚════██║██║   ██║██║     ██║   ██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+   . . . ./  - .          )               ███████║╚██████╔╝███████╗╚██████╔╝   ██║   ██║╚██████╔╝██║ ╚████║███████║
+  .  . . |  _____..---.._/                ╚══════╝ ╚═════╝ ╚══════╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+  -~~----~~~~             ~---~~~~--~~~--~~~---~~~~~---~~~~----~~~~~---~~~--~~~---
+  -- 
+  --    name
+  --      o_emp_api
+  --
+  --    description
+  --      table api for emp
+  --
+  --    modified   (mm/dd/yyyy)
+  --    rmartens   20-nov-2019 12:32:17 - created
+  --------------------------------------------------------------------------------
+  */
+(-- attributes
+
+  empno    number(22),
+  ename    varchar2(50),
+  job      varchar2(50),
+  mgr      number(22),
+  hiredate date,
+  sal      number(22),
+  comm     number(22),
+  deptno   number(22),
+
+  -- Member functions and procedures,
+  constructor function o_emp_api(p_empno in number default null) return self as result,
+
+  member procedure save_to_db,
+
+  member procedure delete_from_db,
+
+  static procedure delete_from_db(p_empno in number)
+
+) not final;
+/
+create or replace type body o_emp_api is
+
+  /********************************************************************************
+  ** constructor function
+  ** usage: <var> := new <object>();     -- for a new empty object
+  **        <var> := new <object>(1234); -- retreive record 1234 from table
+  **                                        and store in object
+  ********************************************************************************/
+  constructor function o_emp_api(p_empno in number default null) return self as result is
+    cursor c_record is
+    select t.empno,
+           t.ename,
+           t.job,
+           t.mgr,
+           t.hiredate,
+           t.sal,
+           t.comm,
+           t.deptno
+    from   emp t
+    where  t.empno = p_empno;
+
+  begin
+
+    if p_empno is not null
+      then
+        open c_record;
+        fetch c_record into
+               self.empno,
+               self.ename,
+               self.job,
+               self.mgr,
+               self.hiredate,
+               self.sal,
+               self.comm,
+               self.deptno;
+        close c_record;
+
+    end if;
+
+    return;
+
+  end o_emp_api;
+
+  /********************************************************************************
+  ** member procedure save_to_db
+  ** usage: <object>.save -- saves the record into the table
+  **                       the primary key will be stored in self.<id_column> after 
+  **                       insert
+  ********************************************************************************/
+  member procedure save_to_db is
+  begin
+
+    if self.empno is null then
+      self.empno := emp_seq.nextval;
+    end if;
+
+    merge into emp trg
+    using dual
+    on (trg.empno = self.empno)
+    when matched then
+    update
+      set trg.ename    = self.ename,
+          trg.job      = self.job,
+          trg.mgr      = self.mgr,
+          trg.hiredate = self.hiredate,
+          trg.sal      = self.sal,
+          trg.comm     = self.comm,
+          trg.deptno   = self.deptno
+    when not matched then
+      insert
+        (empno
+        ,ename
+        ,job
+        ,mgr
+        ,hiredate
+        ,sal
+        ,comm
+        ,deptno)
+        values
+        (self.empno
+        ,self.ename
+        ,self.job
+        ,self.mgr
+        ,self.hiredate
+        ,self.sal
+        ,self.comm
+        ,self.deptno);
+
+  end save_to_db;
+
+  /********************************************************************************
+  ** member procedure delete_from db
+  ** usage: <object>.delete_from_db -- remove the record from the table
+  ********************************************************************************/
+  member procedure delete_from_db is
+  begin
+
+    delete emp t
+    where  t.empno = self.empno;
+
+  end delete_from_db;
+
+  /********************************************************************************
+  ** static procedure delete_from db
+  ** usage: <object>.delete_from_db(1234) -- remove record 1234 from the table
+  **        the object should not be instantiated
+  ********************************************************************************/
+  static procedure delete_from_db(p_empno in number) is
+  begin
+  
+    delete emp t
+    where  t.empno = p_empno;
+  
+  end delete_from_db;
+  
+end;
+/

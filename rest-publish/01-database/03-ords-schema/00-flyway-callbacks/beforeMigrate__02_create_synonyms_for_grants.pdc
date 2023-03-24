@@ -1,0 +1,60 @@
+set serveroutput on
+declare
+  -- #### recreates synonyms for all objects that we have been granted any access to
+  procedure runcmd(i_command in varchar2) is
+  begin
+    --dbms_output.put_line(i_command);
+    execute immediate i_command;
+  exception
+    when others then
+      dbms_output.put_line(sqlerrm);
+  end runcmd;
+begin
+
+  dbms_output.enable(buffer_size => 255000);
+
+  -- Drop synonyms that are no longer granted
+  <<usersynonyms>>
+  for usersynonym in (select 'drop synonym ' || syn.synonym_name as drop_cmd
+                      from   user_synonyms syn
+                      where  not exists (select 1
+                              from   user_tab_privs_recd utpr
+                              where  1 = 1
+                              and    utpr.table_name = syn.synonym_name)
+                      or     syn.synonym_name like 'SYS_PLSQL%')
+  loop
+  
+    runcmd(usersynonym.drop_cmd);
+  
+  end loop usersynonyms;
+
+  <<objects_rcvd>>
+  for obj in (select distinct utpr.owner                                             as object_owner
+                             ,utpr.table_name                                        as object_name
+                             ,utpr.type                                              as object_type
+                             ,usob.object_name                                       as user_object_name
+                             ,'Drop ' || usob.object_type || ' ' || usob.object_name as dropcmd
+                             ,'Create Or Replace Synonym ' || utpr.table_name || ' For ' ||
+                              utpr.owner || '.' || utpr.table_name                   as create_cmd
+              from   user_tab_privs_recd utpr
+              left   join user_objects usob on usob.object_name = utpr.table_name
+              where  1 = 1
+              and    utpr.table_name not like 'BIN$%'
+              and    utpr.table_name not like 'SYS_PLSQL%'
+              order  by utpr.owner
+                       ,utpr.type
+                       ,utpr.table_name)
+  loop
+  
+    if obj.user_object_name is not null then
+      runcmd(obj.dropcmd);
+    end if;
+    runcmd(obj.create_cmd);
+    dbms_output.put_line(obj.create_cmd);
+    
+  end loop objects_rcvd;
+
+  dbms_output.put_line('Synonyms created in schema ' || user);
+
+end;
+/

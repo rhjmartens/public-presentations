@@ -1,0 +1,1 @@
+After importing the f101.sql, please add a column “orderer” to the employees table using the SQL Workshop

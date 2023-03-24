@@ -1,0 +1,57 @@
+{
+    "kind": "calendar#calendarList",
+    "etag": "\"p33k818ldjesu20g\"",
+    "nextSyncToken": "COiAoq2bueECEhxyLm1hcnRlbnNAc21hcnQ0c29sdXRpb25zLm5s",
+    "items": [{
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"15527595876000\"",
+        "id": "richard.martens@gmail.com",
+        "summary": "Richard Martens (GMAIL)",
+        "location": "Nederland",
+        "timeZone": "Europe/Amsterdam",
+        "summaryOverride": "Richard (GMAIL)",
+        "colorId": "12",
+        "backgroundColor": "#fad165",
+        "foregroundColor": "#000000",
+        "selected": true,
+        "accessRole": "owner",
+        "defaultReminders": [],
+        "conferenceProperties": {
+            "allowedConferenceSolutionTypes": ["hangoutsMeet"]
+        }
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"15527595778000\"",
+        "id": "r.martens@smart4solutions.nl",
+        "summary": "Richard",
+        "timeZone": "Europe/Amsterdam",
+        "colorId": "3",
+        "backgroundColor": "#b90e28",
+        "foregroundColor": "#ffffff",
+        "selected": true,
+        "accessRole": "owner",
+        "defaultReminders": [{
+            "method": "popup",
+            "minutes": 10
+        }],
+        "notificationSettings": {
+            "notifications": [{
+                "type": "eventCreation",
+                "method": "email"
+            }, {
+                "type": "eventChange",
+                "method": "email"
+            }, {
+                "type": "eventCancellation",
+                "method": "email"
+            }, {
+                "type": "eventResponse",
+                "method": "email"
+            }]
+        },
+        "primary": true,
+        "conferenceProperties": {
+            "allowedConferenceSolutionTypes": ["hangoutsMeet"]
+        }
+    }]
+}

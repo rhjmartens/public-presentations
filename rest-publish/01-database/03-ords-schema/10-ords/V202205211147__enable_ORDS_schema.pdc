@@ -1,0 +1,14 @@
+declare
+   pragma autonomous_transaction;
+begin
+
+   ords.enable_schema(p_enabled             => true
+                     ,p_schema              => 'presrest_ords_dev'
+                     ,p_url_mapping_type    => 'BASE_PATH'
+                     ,p_url_mapping_pattern => 'pres_rest'
+                     ,p_auto_rest_auth      => true);
+
+   commit;
+
+end;
+/

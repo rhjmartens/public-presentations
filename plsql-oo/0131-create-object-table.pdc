@@ -1,0 +1,55 @@
+clear;
+begin execute immediate 'drop table employees'; exception when others then null; end;
+/
+create table employees
+(
+  empid      number,
+  emp        o_emp,
+  created_on date         default on null sysdate,
+  created_by varchar2(30) not null,
+  updated_on date,
+  updated_by varchar2(30)
+);
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table employees
+  add constraint employees_pk primary key (emp.empno);
+
+-- ^^ Pay attention here. the PK is on the empno INSIDE the object-type! ^^
+ 
+create or replace trigger employees_ctrg
+for insert or update on employees
+  compound trigger
+
+  before each row is
+  begin
+
+    case
+      when inserting then
+        :new.empid      := :new.emp.empno;
+        :new.updated_on := null;
+        :new.updated_by := null;
+        :new.created_on := sysdate;
+        :new.created_by := coalesce( sys_context('APEX$SESSION', 'app_user')
+                                   , regexp_substr(sys_context('userenv', 'client_identifier'), '^[^:]*')
+                                   , sys_context( 'userenv', 'os_user' )
+                                   , sys_context('userenv', 'session_user'));
+
+      when updating then
+        :new.empid      := :new.emp.empno;
+        :new.created_on := :old.created_on;
+        :new.created_by := :old.created_by;
+        :new.updated_on := sysdate;
+        :new.updated_by := coalesce( sys_context('APEX$SESSION', 'app_user')
+                                   , regexp_substr(sys_context('userenv', 'client_identifier'), '^[^:]*')
+                                   , sys_context( 'userenv', 'os_user' )
+                                   , sys_context('userenv', 'session_user'));
+
+      else
+        null;
+
+    end case;
+
+  end before each row;
+
+end employees_ctrg;
+/

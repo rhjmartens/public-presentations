@@ -1,0 +1,10 @@
+{
+    "kind": "calendar#calendar",
+    "etag": "\"JWPyaEfg9X1jMhlHCcI4tl2ho/wr_wx_thETO6YkNTGdrdjP5cuY\"",
+    "id": "r.martens@smart4solutions.nl",
+    "summary": "Richard",
+    "timeZone": "Europe/Amsterdam",
+    "conferenceProperties": {
+        "allowedConferenceSolutionTypes": ["hangoutsMeet"]
+    }
+}

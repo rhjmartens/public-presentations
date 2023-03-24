@@ -1,0 +1,18 @@
+drop table deptxml cascade constraints;
+clear;
+-- ################################################################################
+-- ################################################################################
+-- Create table
+create table deptxml
+(
+  deptid number default on null dept_seq.nextval not null,
+  dept   xmltype not null
+)
+nologging;
+
+
+-- ################################################################################
+-- ################################################################################
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table deptxml
+  add constraint deptxml_pk primary key (DEPTID);
